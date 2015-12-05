@@ -1,7 +1,7 @@
 consul-ng Cookbook
 ================
 
-[![Cookbook](http://img.shields.io/badge/cookbook-v0.1.0-green.svg)](https://github.com/vkhatri/chef-consul-ng)[![Build Status](https://travis-ci.org/vkhatri/chef-consul.svg?branch=master)](https://travis-ci.org/vkhatri/chef-consul-ng)
+[![Cookbook](http://img.shields.io/badge/cookbook-v0.1.0-green.svg)](https://github.com/vkhatri/chef-consul-ng)[![Build Status](https://travis-ci.org/vkhatri/chef-consul-ng.svg?branch=master)](https://travis-ci.org/vkhatri/chef-consul-ng)
 
 This is a [Chef] cookbook to manage [Consul].
 
