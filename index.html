@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="description" content="Chef Consul Cookbook : Chef Cookbook to Manage Consul">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Chef Consul Cookbook</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/vkhatri/chef-consul-ng">View on GitHub</a>
+
+          <h1 id="project_title">Chef Consul Cookbook</h1>
+          <h2 id="project_tagline">Chef Cookbook to Manage Consul</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/vkhatri/chef-consul-ng/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/vkhatri/chef-consul-ng/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a id="consul-ng-cookbook" class="anchor" href="#consul-ng-cookbook" aria-hidden="true"><span class="octicon octicon-link"></span></a>consul-ng Cookbook</h1>
+
+<p><a href="https://github.com/vkhatri/chef-consul-ng"><img src="http://img.shields.io/badge/cookbook-v0.1.0-green.svg" alt="Cookbook"></a><a href="https://travis-ci.org/vkhatri/chef-consul-ng"><img src="https://travis-ci.org/vkhatri/chef-consul-ng.svg?branch=master" alt="Build Status"></a></p>
+
+<p>This is a <a href="https://www.chef.io/">Chef</a> cookbook to manage <a href="https://consul.io/">Consul</a>.</p>
+
+<blockquote>
+<blockquote>
+<p>For Production environment, always prefer the <a href="https://supermarket.chef.io/cookbooks/consul-ng">most recent release</a>.</p>
+</blockquote>
+</blockquote>
+
+<h2>
+<a id="most-recent-release" class="anchor" href="#most-recent-release" aria-hidden="true"><span class="octicon octicon-link"></span></a>Most Recent Release</h2>
+
+<pre><code>cookbook 'consul-ng', '~&gt; 0.1.0'
+</code></pre>
+
+<h2>
+<a id="from-git" class="anchor" href="#from-git" aria-hidden="true"><span class="octicon octicon-link"></span></a>From Git</h2>
+
+<pre><code>cookbook 'consul', github: 'vkhatri/chef-consul-ng'
+</code></pre>
+
+<h2>
+<a id="repository" class="anchor" href="#repository" aria-hidden="true"><span class="octicon octicon-link"></span></a>Repository</h2>
+
+<p><a href="https://github.com/vkhatri/chef-consul-ng">https://github.com/vkhatri/chef-consul-ng</a></p>
+
+<h2>
+<a id="supported-os" class="anchor" href="#supported-os" aria-hidden="true"><span class="octicon octicon-link"></span></a>Supported OS</h2>
+
+<p>This cookbook was tested on Amazon &amp; Ubuntu Linux and expected to work on other RHEL platforms.</p>
+
+<h2>
+<a id="recipes" class="anchor" href="#recipes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Recipes</h2>
+
+<ul>
+<li><p><code>consul::default</code> - default recipe (use it for run_list)</p></li>
+<li><p><code>consul::user</code> - setup consul user/group</p></li>
+<li><p><code>consul::install</code> - install consul</p></li>
+<li><p><code>consul::config</code> - configure consul</p></li>
+</ul>
+
+<h2>
+<a id="advanced-attributes" class="anchor" href="#advanced-attributes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Advanced Attributes</h2>
+
+<ul>
+<li><p><code>default['consul']['version']</code> (default: <code>0.5.2</code>): consul version</p></li>
+<li><p><code>default['consul']['packages']</code> (default: <code>['unzip']</code>): package dependencies</p></li>
+<li><p><code>default['consul']['notify_restart']</code> (default: <code>true</code>): whether to restart consul service on configuration file change</p></li>
+<li><p><code>default['consul']['disable_service']</code> (default: <code>false</code>): whether to disable and stop consul service</p></li>
+<li><p><code>default['consul']['package_url']</code> (default: <code>auto</code>): download consul package file from hashicorp package repository</p></li>
+<li><p><code>default['consul']['webui_package_url']</code> (default: <code>auto</code>): download consul webui package file from hashicorp package repository</p></li>
+<li><p><code>default['consul']['setup_user']</code> (default: <code>true</code>): setup consul user / group</p></li>
+<li><p><code>default['consul']['enable_webui']</code> (default: <code>true</code>): enable consul webui</p></li>
+<li><p><code>default['consul']['enable_webui']</code> (default: <code>true</code>): enable consul webui</p></li>
+</ul>
+
+<h2>
+<a id="core-attributes" class="anchor" href="#core-attributes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Core Attributes</h2>
+
+<ul>
+<li><p><code>default['consul']['packages']</code> (default: <code>['unzip']</code>): package dependencies</p></li>
+<li><p><code>default['consul']['conf_dir']</code> (default: <code>/etc/consul</code>): consul configuration directory</p></li>
+<li><p><code>default['consul']['conf_file']</code> (default: <code>/etc/consul/000-consul.json</code>): consul configuration file</p></li>
+<li><p><code>default['consul']['parent_dir']</code> (default: <code>/usr/local/consul</code>): consul parent directory</p></li>
+<li><p><code>default['consul']['pid_dir']</code> (default: <code>/var/run/consul</code>): consul service pid directory</p></li>
+<li><p><code>default['consul']['log_dir']</code> (default: <code>/var/log/consul</code>): consul log directory</p></li>
+<li><p><code>default['consul']['mode']</code> (default: <code>0754</code>): default directory/file resources mode</p></li>
+<li><p><code>default['consul']['umask']</code> (default: <code>0023</code>): execute resource attribute</p></li>
+<li><p><code>default['consul']['user']</code> (default: <code>consul</code>): user name</p></li>
+<li><p><code>default['consul']['group']</code> (default: <code>consul</code>): group name</p></li>
+<li><p><code>default['consul']['version_purge']</code> (default: <code>false</code>): purge older versions under <code>node['consul']['parent_dir']</code></p></li>
+</ul>
+
+<h2>
+<a id="configuration-file-001-consuljson-attributes" class="anchor" href="#configuration-file-001-consuljson-attributes" aria-hidden="true"><span class="octicon octicon-link"></span></a>Configuration File 001-consul.json Attributes</h2>
+
+<ul>
+<li><p><code>default['consul']['config']['datacenter']</code> (default: <code>nil</code>): consul configuration attribute, need to <strong>set</strong> this attribute</p></li>
+<li><p><code>default['consul']['config']['encrypt']</code> (default: <code>nil</code>): consul configuration attribute, need to <strong>set</strong> this attribute</p></li>
+<li><p><code>default['consul']['config']['start_join']</code> (default: <code>[]</code>): consul configuration attribute, <strong>set this attribute with consul servers ip address</strong></p></li>
+<li><p><code>default['consul']['config']['bootstrap']</code> (default: <code>false</code>): consul configuration attribute</p></li>
+<li><p><code>default['consul']['config']['server']</code> (default: <code>false</code>): consul configuration attribute</p></li>
+<li><p><code>default['consul']['config']['log_level']</code> (default: <code>INFO</code>): consul configuration attribute</p></li>
+<li><p><code>default['consul']['config']['bind_addr']</code> (default: <code>node['ipaddress']</code>): consul configuration attribute</p></li>
+<li><p><code>default['consul']['config']['client_addr']</code> (default: <code>node['ipaddress']</code>): consul configuration attribute</p></li>
+<li><p><code>default['consul']['config']['ports']['server']</code> (default: <code>8300</code>): consul port</p></li>
+<li><p><code>default['consul']['config']['ports']['serf_lan']</code> (default: <code>8301</code>): consul port</p></li>
+<li><p><code>default['consul']['config']['ports']['serf_wan']</code> (default: <code>8302</code>): consul port</p></li>
+<li><p><code>default['consul']['config']['ports']['rpc']</code> (default: <code>8400</code>): consul port</p></li>
+<li><p><code>default['consul']['config']['ports']['dns']</code> (default: <code>8600</code>): consul port</p></li>
+<li><p><code>default['consul']['config']['ports']['http']</code> (default: <code>8500</code>): consul port</p></li>
+</ul>
+
+<p>For more attribute info, visit below links:</p>
+
+<pre><code>http://www.consul.io/docs/agent/options.html
+</code></pre>
+
+<h2>
+<a id="contributing" class="anchor" href="#contributing" aria-hidden="true"><span class="octicon octicon-link"></span></a>Contributing</h2>
+
+<ol>
+<li>Fork the repository on Github</li>
+<li>Create a named feature branch (like <code>add_component_x</code>)</li>
+<li>Write your change</li>
+<li>Write tests for your change (if applicable)</li>
+<li>Run the tests (<code>rake &amp; rake knife</code>), ensuring they all pass</li>
+<li>Write new resource/attribute description to <code>README.md</code>
+</li>
+<li>Write description about changes to PR</li>
+<li>Submit a Pull Request using Github</li>
+</ol>
+
+<h2>
+<a id="copyright--license" class="anchor" href="#copyright--license" aria-hidden="true"><span class="octicon octicon-link"></span></a>Copyright &amp; License</h2>
+
+<p>Authors:: Virender Khatri and <a href="https://github.com/vkhatri/chef-consul/graphs/contributors">Contributors</a></p>
+
+<pre>
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+</pre>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Chef Consul Cookbook maintained by <a href="https://github.com/vkhatri">vkhatri</a></p>
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
