@@ -45,7 +45,7 @@ This cookbook was tested on Amazon & Ubuntu Linux and expected to work on other 
 ## Advanced Attributes
 
 
-* `default['consul']['version']` (default: `0.5.2`): consul version
+* `default['consul']['version']` (default: `0.6.0`): consul version
 
 * `default['consul']['packages']` (default: `['unzip']`): package dependencies
 

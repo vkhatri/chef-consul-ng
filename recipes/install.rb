@@ -82,7 +82,7 @@ execute 'extract_webui_package_file' do
   group node['consul']['group']
   umask node['consul']['umask']
   cwd node['consul']['version_dir']
-  command "unzip #{webui_package_file}"
+  command node['consul']['version'] >= '0.6.0' ? "unzip #{webui_package_file} -d dist" : "unzip #{webui_package_file}"
   creates ::File.join(node['consul']['version_dir'], 'dist', 'index.html')
 end
 
