@@ -106,3 +106,17 @@ ruby_block 'purge_old_versions' do
   end
   only_if { node['consul']['version_purge'] }
 end
+
+if Chef::Resource::ChefGem.method_defined?(:compile_time)
+  chef_gem 'diplomat' do
+    compile_time true
+    version node['consul']['diplomat_gem_version'] if node['consul']['diplomat_gem_version']
+    only_if { node['consul']['install_diplomat_gem'] }
+  end
+else
+  chef_gem 'diplomat' do
+    version node['consul']['diplomat_gem_version'] if node['consul']['diplomat_gem_version']
+    action :nothing
+    only_if { node['consul']['install_diplomat_gem'] }
+  end.run_action(:install)
+end

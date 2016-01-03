@@ -63,6 +63,10 @@ This cookbook was tested on Amazon & Ubuntu Linux and expected to work on other 
 
 * `default['consul']['enable_webui']` (default: `true`): enable consul webui
 
+* `default['consul']['diplomat_gem_version']` (default: `nil`): diplomat chef gem version
+
+* `default['consul']['install_diplomat_gem']` (default: `true`): install diplomat chef gem
+
 
 ## Core Attributes
 
