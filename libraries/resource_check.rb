@@ -40,6 +40,30 @@ class Chef
         )
       end
 
+      def tcp(arg = nil)
+        set_or_return(
+          :tcp, arg,
+          :kind_of => String,
+          :default => nil
+        )
+      end
+
+      def docker_container_id(arg = nil)
+        set_or_return(
+          :docker_container_id, arg,
+          :kind_of => String,
+          :default => nil
+        )
+      end
+
+      def shell(arg = nil)
+        set_or_return(
+          :shell, arg,
+          :kind_of => String,
+          :default => nil
+        )
+      end
+
       def timeout(arg = nil)
         set_or_return(
           :timeout, arg,

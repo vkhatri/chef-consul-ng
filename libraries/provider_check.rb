@@ -31,9 +31,12 @@ class Chef
         content['id'] = new_resource.id if new_resource.id
         content['script'] = new_resource.script if new_resource.script
         content['http'] = new_resource.http if new_resource.http
+        content['tcp'] = new_resource.tcp if new_resource.tcp
+        content['ttl'] = new_resource.ttl if new_resource.ttl
+        content['docker_container_id'] = new_resource.docker_container_id if new_resource.docker_container_id
+        content['shell'] = new_resource.shell if new_resource.shell
         content['timeout'] = new_resource.timeout if new_resource.timeout
         content['interval'] = new_resource.interval if new_resource.interval
-        content['ttl'] = new_resource.ttl if new_resource.ttl
         content['service_id'] = new_resource.service_id if new_resource.service_id
 
         t = Chef::Resource::File.new("consul_check_#{new_resource.name}", run_context)
