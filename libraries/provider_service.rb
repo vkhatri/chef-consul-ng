@@ -32,7 +32,9 @@ class Chef
         content['tags'] = new_resource.tags if new_resource.tags
         content['address'] = new_resource.address if new_resource.address
         content['port'] = new_resource.port if new_resource.port
+        content['enableTagOverride'] = new_resource.enable_tag_override unless new_resource.enable_tag_override.nil?
         content['checks'] = new_resource.checks if new_resource.checks
+        content['token'] = new_resource.token if new_resource.token
 
         t = Chef::Resource::File.new("consul_service_#{new_resource.name}", run_context)
         t.path ::File.join(node['consul']['conf_dir'], "100-service-#{new_resource.name}.json")

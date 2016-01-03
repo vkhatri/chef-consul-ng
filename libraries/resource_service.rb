@@ -48,6 +48,22 @@ class Chef
         )
       end
 
+      def enable_tag_override(arg = nil)
+        set_or_return(
+          :enable_tag_override, arg,
+          :kind_of => [TrueClass, FalseClass],
+          :default => nil
+        )
+      end
+
+      def token(arg = nil)
+        set_or_return(
+          :token, arg,
+          :kind_of => String,
+          :default => nil
+        )
+      end
+
       def checks(arg = nil)
         set_or_return(
           :checks, arg,
