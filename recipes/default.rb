@@ -20,6 +20,7 @@
 fail "missing value for attribute node['consul']['config']['datacenter']" unless node['consul']['config']['datacenter']
 fail "missing value for attribute node['consul']['config']['encrypt']" unless node['consul']['config']['encrypt']
 
+node.default['consul']['scripts_dir'] = ::File.join(node['consul']['parent_dir'], 'scripts')
 node.default['consul']['install_dir'] = ::File.join(node['consul']['parent_dir'], 'consul')
 node.default['consul']['version_dir'] = ::File.join(node['consul']['parent_dir'], node['consul']['version'])
 node.default['consul']['config']['ui_dir'] = ::File.join(node['consul']['install_dir'], 'dist') if node['consul']['enable_webui']

@@ -26,6 +26,7 @@ include_recipe 'consul-ng::user'
 [node['consul']['parent_dir'],
  node['consul']['version_dir'],
  node['consul']['conf_dir'],
+ node['consul']['scripts_dir'],
  node['consul']['pid_dir'],
  node['consul']['config']['data_dir'],
  node['consul']['log_dir']
