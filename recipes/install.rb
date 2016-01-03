@@ -91,6 +91,10 @@ link node['consul']['install_dir'] do
   to node['consul']['version_dir']
 end
 
+link '/usr/bin/consul' do
+  to ::File.join(node['consul']['install_dir'], 'consul')
+end
+
 # purge older versions
 ruby_block 'purge_old_versions' do
   block do
