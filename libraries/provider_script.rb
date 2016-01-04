@@ -27,6 +27,7 @@ class Chef
       protected
 
       def script_file
+        action = new_resource.action.is_a?(Array) ? new_resource.action.first : new_resource.action
         if new_resource.script_content
           t = Chef::Resource::File.new("consul_script_#{new_resource.name}", run_context)
           t.content new_resource.script_content
@@ -44,7 +45,7 @@ class Chef
         end
         t.path ::File.join(node['consul']['scripts_dir'], new_resource.name)
         t.mode 0755
-        t.run_action new_resource.action
+        t.run_action action
         t.updated?
       end
     end

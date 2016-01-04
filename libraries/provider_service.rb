@@ -27,6 +27,7 @@ class Chef
       protected
 
       def service_file
+        action = new_resource.action.is_a?(Array) ? new_resource.action.first : new_resource.action
         content = { 'name' => new_resource.name }
         content['id'] = new_resource.id if new_resource.id
         content['tags'] = new_resource.tags if new_resource.tags
@@ -40,7 +41,7 @@ class Chef
         t.path ::File.join(node['consul']['conf_dir'], "100-service-#{new_resource.name}.json")
         t.content JSON.pretty_generate(service: content)
         t.notifies :reload, 'service[consul]' if notify_service_restart?
-        t.run_action new_resource.action
+        t.run_action action
         t.updated?
       end
     end
