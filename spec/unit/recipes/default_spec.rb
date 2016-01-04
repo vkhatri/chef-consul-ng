@@ -47,6 +47,10 @@ describe 'consul-ng::default' do
         expect(chef_run).to create_link('/usr/local/consul/consul')
       end
 
+      it 'create link /usr/bin/consul' do
+        expect(chef_run).to create_link('/usr/bin/consul')
+      end
+
       it 'run ruby_block purge_old_versions' do
         expect(chef_run).to run_ruby_block('purge_old_versions')
       end
