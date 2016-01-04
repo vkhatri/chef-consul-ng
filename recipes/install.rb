@@ -89,6 +89,7 @@ end
 
 link node['consul']['install_dir'] do
   to node['consul']['version_dir']
+  notifies :restart, 'service[consul]'
 end
 
 link '/usr/bin/consul' do
