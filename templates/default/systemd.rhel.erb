@@ -1,0 +1,14 @@
+[Unit]
+Description=consul
+After=network.target
+
+[Service]
+Environment="GOMAXPROCS=2" "PATH=/usr/local/bin:/usr/bin:/bin"
+ExecStart=/usr/bin/env consul agent -config-file=<%= node['consul']['conf_file'] %> -config-dir=<%= node['consul']['conf_dir'] %>
+ExecReload=/bin/kill -HUP $MAINPID
+KillSignal=TERM
+User=<%= node['consul']['user'] %>
+WorkingDirectory=<%= node['consul']['config']['data_dir'] %>
+
+[Install]
+WantedBy=multi-user.target

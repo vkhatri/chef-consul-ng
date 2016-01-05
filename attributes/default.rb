@@ -27,6 +27,8 @@ default['consul']['pid_dir'] = '/var/run/consul'
 default['consul']['diplomat_gem_version'] = nil
 default['consul']['install_diplomat_gem'] = false # enable it on specific node to manage acl
 
+default['consul']['chef-sugar_gem_version'] = nil
+
 # http://www.consul.io/docs/agent/options.html
 default['consul']['config']['bootstrap'] = false
 default['consul']['config']['server'] = false
