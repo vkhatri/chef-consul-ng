@@ -17,18 +17,6 @@
 # limitations under the License.
 #
 
-# if Chef::Resource::ChefGem.instance_methods(false).include?(:compile_time)
-#   chef_gem 'chef-sugar' do
-#     version node['consul']['chef-sugar_gem_version'] if node['consul']['chef-sugar_gem_version']
-#     compile_time true
-#   end
-# else
-#   chef_gem 'chef-sugar' do
-#     version node['consul']['chef-sugar_gem_version'] if node['consul']['chef-sugar_gem_version']
-#     action :nothing
-#   end.run_action(:install)
-# end
-
 file 'consul_config_file' do
   path node['consul']['conf_file']
   content JSON.pretty_generate(node['consul']['config'])
