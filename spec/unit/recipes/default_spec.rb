@@ -49,7 +49,7 @@ describe 'consul-ng::default' do
 
       it 'run ruby_block purge_old_versions' do
         expect(chef_run).to run_ruby_block('purge_old_versions')
-      end    
+      end
 
       it 'create /etc/consul/000-consul.json' do
         expect(chef_run).to create_file('/etc/consul/000-consul.json')
