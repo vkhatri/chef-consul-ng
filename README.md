@@ -28,7 +28,7 @@ https://github.com/vkhatri/chef-consul-ng
 
 ## Supported OS
 
-This cookbook was tested on Amazon & Ubuntu Linux and expected to work on other RHEL platforms.
+This cookbook was tested on Amazon & Ubuntu & Centos7 Linux and expected to work on other RHEL platforms.
 
 
 ## Recipes
@@ -66,6 +66,8 @@ This cookbook was tested on Amazon & Ubuntu Linux and expected to work on other 
 * `default['consul']['diplomat_gem_version']` (default: `nil`): diplomat chef gem version
 
 * `default['consul']['install_diplomat_gem']` (default: `true`): install diplomat chef gem
+
+* `default['consul']['chef-sugar_gem_version']` (default: `nil`): chef-sugar chef gem version
 
 
 ## Core Attributes
