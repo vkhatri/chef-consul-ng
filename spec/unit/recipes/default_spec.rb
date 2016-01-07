@@ -49,7 +49,7 @@ describe 'consul-ng::default' do
 
       it 'run ruby_block purge_old_versions' do
         expect(chef_run).to run_ruby_block('purge_old_versions')
-      end      
+      end    
 
       it 'create /etc/consul/000-consul.json' do
         expect(chef_run).to create_file('/etc/consul/000-consul.json')
@@ -71,7 +71,7 @@ describe 'consul-ng::default' do
   end
 
   shared_examples_for 'systemd' do
-    context 'systemd systems' do      
+    context 'systemd systems' do
       it 'create consul_systemd_file' do
         expect(chef_run).to create_template('consul_systemd_file').with(path: '/etc/systemd/system/consul.service')
       end
@@ -90,7 +90,7 @@ describe 'consul-ng::default' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
         node.automatic['platform_family'] = 'rhel'
-        node.automatic['init_package'] ='init'
+        node.automatic['init_package'] = 'init'
         node.automatic['consul']['config']['datacenter'] = 'dc1'
         node.automatic['consul']['config']['encrypt'] = 'Dt3P9SpKGAR/DIUN1cDirg=='
         node.automatic['consul']['version_purge'] = true
@@ -106,13 +106,13 @@ describe 'consul-ng::default' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '12.04') do |node|
         node.automatic['platform_family'] = 'debian'
-        node.automatic['init_package'] ='init'
+        node.automatic['init_package'] = 'init'
         node.automatic['consul']['config']['datacenter'] = 'dc1'
         node.automatic['consul']['config']['encrypt'] = 'Dt3P9SpKGAR/DIUN1cDirg=='
         node.automatic['consul']['version_purge'] = true
       end.converge(described_recipe)
     end
-    
+
     include_examples 'consul'
     include_examples 'initd'
     include_examples 'linux'
@@ -122,7 +122,7 @@ describe 'consul-ng::default' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0') do |node|
         node.automatic['platform_family'] = 'rhel'
-        node.automatic['init_package'] ='systemd'
+        node.automatic['init_package'] = 'systemd'
         node.automatic['consul']['config']['datacenter'] = 'dc1'
         node.automatic['consul']['config']['encrypt'] = 'Dt3P9SpKGAR/DIUN1cDirg=='
         node.automatic['consul']['version_purge'] = true
@@ -133,5 +133,4 @@ describe 'consul-ng::default' do
     include_examples 'systemd'
     include_examples 'linux'
   end
-
 end
