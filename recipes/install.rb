@@ -94,6 +94,7 @@ end
 
 link '/usr/bin/consul' do
   to ::File.join(node['consul']['install_dir'], 'consul')
+  only_if { node['os']=='linux' }
 end
 
 # purge older versions
