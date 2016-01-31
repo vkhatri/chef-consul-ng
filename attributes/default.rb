@@ -1,4 +1,4 @@
-default['consul']['version'] = '0.6.0'
+default['consul']['version'] = '0.6.3'
 default['consul']['disable_service'] = false
 
 default['consul']['packages'] = %w(unzip)
@@ -73,6 +73,7 @@ default['consul']['config']['ports']['http'] = 8_500
 # default['consul']['config']['addresses'] =
 # default['consul']['config']['statsite_addr'] =
 # default['consul']['config']['enable_debug'] =
+# default['consul']['config']['ui'] =
 # default['consul']['config']['ui_dir'] =
 # default['consul']['config']['check_update_interval'] =
 # default['consul']['config']['acl_datacenter'] =
@@ -80,3 +81,5 @@ default['consul']['config']['ports']['http'] = 8_500
 # default['consul']['config']['disable_anonymous_signature'] =
 # default['consul']['config']['statsd_addr'] =
 # default['consul']['config']['recursors'] =
+# default['consul']['config']['monitor-retry'] =
+# default['consul']['config']['dev'] =
