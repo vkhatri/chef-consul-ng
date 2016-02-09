@@ -25,6 +25,11 @@ node.default['consul']['install_dir'] = ::File.join(node['consul']['parent_dir']
 node.default['consul']['version_dir'] = ::File.join(node['consul']['parent_dir'], node['consul']['version'])
 node.default['consul']['config']['ui_dir'] = ::File.join(node['consul']['install_dir'], 'dist') if node['consul']['enable_webui']
 
-include_recipe 'consul-ng::install'
+case node['platform_family']
+when 'windows'
+  include_recipe 'consul-ng::install_windows'
+else
+  include_recipe 'consul-ng::install'
+end
 
 include_recipe 'consul-ng::config'
