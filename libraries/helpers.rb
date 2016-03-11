@@ -55,3 +55,32 @@ def webui_sha256sum(version)
   fail "sha256sum is missing for consul web ui package version #{version}" unless sha256sum
   sha256sum
 end
+
+
+module ConsulJoinHelper
+  # Function to assist in getting an array of consul server ip addresses in a specific consul dc. Useful to fill the join addresses for a member
+  def get_consul_server_ips(excludeself = false,datacenter = node['consul']['config']['datacenter'])
+    arrIp = Array.new
+    if Chef::Config[:solo]
+          Chef::Log.warn('This recipe uses search. Chef Solo does not support search.')
+        else
+      search(:node, "consul_config_server:true AND consul_config_datacenter:\""+datacenter+"\"", 
+      :filter_result => { 'ip' => [ 'ipaddress' ] }
+      ).each do |result|
+        unless (excludeself && (result['ip'] == node['ipaddress']))
+            arrIp.push(result['ip'])
+        end
+        end
+    end
+    return arrIp.uniq.sort!
+  end
+
+  # Function to assist in getting an array of consul server ip addresses in an array of consul dc's. Useful to fill the join-wan addresses for servers.
+  def get_consul_dc_ips(datacenters = [])
+    arrIp = Array.new
+    datacenters.each do | dc|
+      arrIp+=get_consul_server_ips(false,dc)
+    end
+    return arrIp.uniq.sort!
+  end
+end
