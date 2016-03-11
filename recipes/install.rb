@@ -39,20 +39,20 @@ include_recipe 'consul-ng::user'
   end
 end
 
-if node['consul']['package_url'] == 'auto'
-  package_url = "https://releases.hashicorp.com/consul/#{node['consul']['version']}/consul_#{node['consul']['version']}_linux_#{package_arch}.zip"
-else
-  package_url = node['consul']['package_url']
-end
+package_url = if node['consul']['package_url'] == 'auto'
+                "https://releases.hashicorp.com/consul/#{node['consul']['version']}/consul_#{node['consul']['version']}_linux_#{package_arch}.zip"
+              else
+                node['consul']['package_url']
+              end
 
 package_file = ::File.join(node['consul']['version_dir'], ::File.basename(package_url))
 package_checksum = consul_sha256sum(node['consul']['version'])
 
-if node['consul']['webui_package_url'] == 'auto'
-  webui_package_url = "https://releases.hashicorp.com/consul/#{node['consul']['version']}/consul_#{node['consul']['version']}_web_ui.zip"
-else
-  webui_package_url = node['consul']['webui_package_url']
-end
+webui_package_url = if node['consul']['webui_package_url'] == 'auto'
+                      "https://releases.hashicorp.com/consul/#{node['consul']['version']}/consul_#{node['consul']['version']}_web_ui.zip"
+                    else
+                      node['consul']['webui_package_url']
+                    end
 
 webui_package_file = ::File.join(node['consul']['version_dir'], ::File.basename(webui_package_url))
 webui_package_checksum = webui_sha256sum(node['consul']['version'])

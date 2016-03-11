@@ -41,7 +41,7 @@ def consul_sha256sum(version)
     }
   }
   sha256sum = sha256sums[node['os']][package_arch][version]
-  fail "sha256sum is missing for consul package version #{version}" unless sha256sum
+  raise "sha256sum is missing for consul package version #{version}" unless sha256sum
   sha256sum
 end
 
@@ -52,7 +52,7 @@ def webui_sha256sum(version)
     '0.6.3' => '93bbb300cacfe8de90fb3bd5ede7d37ae6ce014898edc520b9c96a676b2bbb72'
   }
   sha256sum = sha256sums[version]
-  fail "sha256sum is missing for consul web ui package version #{version}" unless sha256sum
+  raise "sha256sum is missing for consul web ui package version #{version}" unless sha256sum
   sha256sum
 end
 
