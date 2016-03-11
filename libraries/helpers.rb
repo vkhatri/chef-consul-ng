@@ -79,7 +79,7 @@ module ConsulJoinHelper
   # Function to assist in getting an array of consul server ip addresses in an array of consul dc's. Useful to fill the join-wan addresses for servers.
   def get_consul_dc_ips(datacenters = [])
     arrip = []
-    datacenters.each do | dc|
+    datacenters.each do |dc|
       arrip += get_consul_server_ips(false, dc)
     end
     arrip.uniq.sort!
