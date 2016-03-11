@@ -42,18 +42,18 @@ node.default['consul']['config']['ui_dir'] = ::File.join(node['consul']['install
   end
 end
 
-if node['consul']['package_url'] == 'auto'
-  package_url = "https://releases.hashicorp.com/consul/#{node['consul']['version']}/consul_#{node['consul']['version']}_#{node['os']}_#{package_arch}.zip"
+package_url = if node['consul']['package_url'] == 'auto'
+  "https://releases.hashicorp.com/consul/#{node['consul']['version']}/consul_#{node['consul']['version']}_#{node['os']}_#{package_arch}.zip"
 else
-  package_url = node['consul']['package_url']
+  node['consul']['package_url']
 end
 
 package_checksum = consul_sha256sum(node['consul']['version'])
 
-if node['consul']['webui_package_url'] == 'auto'
-  webui_package_url = "https://releases.hashicorp.com/consul/#{node['consul']['version']}/consul_#{node['consul']['version']}_web_ui.zip"
+webui_package_url = if node['consul']['webui_package_url'] == 'auto'
+  "https://releases.hashicorp.com/consul/#{node['consul']['version']}/consul_#{node['consul']['version']}_web_ui.zip"
 else
-  webui_package_url = node['consul']['webui_package_url']
+  node['consul']['webui_package_url']
 end
 
 webui_package_checksum = webui_sha256sum(node['consul']['version'])

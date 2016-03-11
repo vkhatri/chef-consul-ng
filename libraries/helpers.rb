@@ -56,31 +56,32 @@ def webui_sha256sum(version)
   sha256sum
 end
 
-
+# Module with helper function for filling join and join-wan ip-addresses
 module ConsulJoinHelper
   # Function to assist in getting an array of consul server ip addresses in a specific consul dc. Useful to fill the join addresses for a member
-  def get_consul_server_ips(excludeself = false,datacenter = node['consul']['config']['datacenter'])
-    arrIp = Array.new
+  def get_consul_server_ips(excludeself = false, datacenter = node['consul']['config']['datacenter'])
+    arrip = []
     if Chef::Config[:solo]
-          Chef::Log.warn('This recipe uses search. Chef Solo does not support search.')
-        else
-      search(:node, "consul_config_server:true AND consul_config_datacenter:\""+datacenter+"\"", 
-      :filter_result => { 'ip' => [ 'ipaddress' ] }
+      Chef::Log.warn('This recipe uses search. Chef Solo does not support search.')
+    else
+      search(
+        :node, 'consul_config_server:true AND consul_config_datacenter:\"' + datacenter + '\"',
+        :filter_result => { 'ip' => ['ipaddress'] }
       ).each do |result|
-        unless (excludeself && (result['ip'] == node['ipaddress']))
-            arrIp.push(result['ip'])
+        unless excludeself && (result['ip'] == node['ipaddress'])
+          arrip.push(result['ip'])
         end
-        end
+      end
     end
-    return arrIp.uniq.sort!
+    arrip.uniq.sort!
   end
 
   # Function to assist in getting an array of consul server ip addresses in an array of consul dc's. Useful to fill the join-wan addresses for servers.
   def get_consul_dc_ips(datacenters = [])
-    arrIp = Array.new
+    arrip = []
     datacenters.each do | dc|
-      arrIp+=get_consul_server_ips(false,dc)
+      arrip += get_consul_server_ips(false, dc)
     end
-    return arrIp.uniq.sort!
+    arrip.uniq.sort!
   end
 end
