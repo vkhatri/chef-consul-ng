@@ -36,7 +36,7 @@ template 'consul_initd_file' do
   source "initd.#{node['platform_family']}.erb"
   mode 0744
   notifies :restart, 'service[consul]' if node['consul']['notify_restart'] && !node['consul']['disable_service']
-  only_if { node['init_package'] == 'init' }
+  only_if { ['init', 'sshd'].include? node['init_package'] }
 end
 
 service_action = node['consul']['disable_service'] ? [:disable, :stop] : [:enable, :start]
