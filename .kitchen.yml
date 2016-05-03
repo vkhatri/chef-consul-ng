@@ -13,10 +13,18 @@ provisioner:
 platforms:
   - name: ubuntu-14.04
   - name: centos-6.5
+  - name: centos-7
+  - name: windows2012r2
+    driver_config:
+      #box_url: https://wrock.blob.core.windows.net/vhds/vbox2012r2.box
+      communicator: winrm
+      vm_hostname: false    
+    transport:
+      name: winrm
 
 suites:
   - name: default
-    require_chef_omnibus: 12.5.1
+    require_chef_omnibus: true
     run_list:
       - recipe[consul-ng::default]
     attributes:

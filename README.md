@@ -28,7 +28,7 @@ https://github.com/vkhatri/chef-consul-ng
 
 ## Supported OS
 
-This cookbook was tested on Amazon & Ubuntu & Centos7 Linux and expected to work on other RHEL platforms.
+This cookbook was tested on Amazon & Ubuntu & Centos7 Linux & Windows2012R2 and expected to work on other RHEL platforms.
 
 
 ## Recipes
@@ -38,6 +38,8 @@ This cookbook was tested on Amazon & Ubuntu & Centos7 Linux and expected to work
 - `consul::user` - setup consul user/group
 
 - `consul::install` - install consul
+- 
+- `consul::install_windows` - install consul on windows
 
 - `consul::config` - configure consul
 
