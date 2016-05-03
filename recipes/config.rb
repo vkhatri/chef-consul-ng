@@ -39,6 +39,27 @@ template 'consul_initd_file' do
   only_if { %w(init sshd).include? node['init_package'] }
 end
 
+if node['os'] == 'windows'
+  include_recipe 'nssm'
+
+  nssm 'consul' do
+    program ::File.join(node['consul']['install_dir'], 'consul.exe')
+    args %(agent -config-dir="""#{node['consul']['conf_dir']}""")
+    params(
+      AppDirectory: node['consul']['install_dir'],
+      AppStdoutCreationDisposition: 4,
+      AppStderrCreationDisposition: 4,
+      AppRotateFiles: 1,
+      AppRotateOnline: 1,
+      AppRotateBytes: 1_048_576,
+      AppStdout: ::File.join(node['consul']['log_dir'], 'consul.log'),
+      AppStderr: ::File.join(node['consul']['log_dir'], 'error.log')
+    )
+    start false
+    action :install
+  end
+end
+
 service_action = node['consul']['disable_service'] ? [:disable, :stop] : [:enable, :start]
 
 service 'consul' do

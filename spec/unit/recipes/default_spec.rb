@@ -21,7 +21,7 @@ describe 'consul-ng::default' do
         expect(chef_run).to create_user('consul').with(system: true)
       end
 
-      %w(/etc/consul /usr/local/consul /var/lib/consul /var/log/consul /var/run/consul /usr/local/consul/scripts).each do |d|
+      %w(/etc/consul /usr/local/consul /usr/local/consul/0.6.3 /var/lib/consul /var/log/consul /var/run/consul /usr/local/consul/scripts).each do |d|
         it "it creates directory #{d}" do
           expect(chef_run).to create_directory(d)
         end
@@ -86,14 +86,24 @@ describe 'consul-ng::default' do
     end
   end
 
+  shared_examples_for 'windows' do
+    context 'windows systems' do
+      %w(install_windows config).each do |r|
+        it "include recipe consul::#{r}" do
+          expect(chef_run).to include_recipe("consul-ng::#{r}")
+        end
+      end
+    end
+  end
+
   context 'centos6' do
     let(:chef_run) do
       ChefSpec::SoloRunner.new(platform: 'centos', version: '6.4') do |node|
         node.automatic['platform_family'] = 'rhel'
         node.automatic['init_package'] = 'init'
-        node.automatic['consul']['config']['datacenter'] = 'dc1'
-        node.automatic['consul']['config']['encrypt'] = 'Dt3P9SpKGAR/DIUN1cDirg=='
-        node.automatic['consul']['version_purge'] = true
+        node.set['consul']['config']['datacenter'] = 'dc1'
+        node.set['consul']['config']['encrypt'] = 'Dt3P9SpKGAR/DIUN1cDirg=='
+        node.set['consul']['version_purge'] = true
       end.converge(described_recipe)
     end
 
@@ -107,9 +117,9 @@ describe 'consul-ng::default' do
       ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '12.04') do |node|
         node.automatic['platform_family'] = 'debian'
         node.automatic['init_package'] = 'init'
-        node.automatic['consul']['config']['datacenter'] = 'dc1'
-        node.automatic['consul']['config']['encrypt'] = 'Dt3P9SpKGAR/DIUN1cDirg=='
-        node.automatic['consul']['version_purge'] = true
+        node.set['consul']['config']['datacenter'] = 'dc1'
+        node.set['consul']['config']['encrypt'] = 'Dt3P9SpKGAR/DIUN1cDirg=='
+        node.set['consul']['version_purge'] = true
       end.converge(described_recipe)
     end
 
@@ -123,14 +133,27 @@ describe 'consul-ng::default' do
       ChefSpec::SoloRunner.new(platform: 'centos', version: '7.0') do |node|
         node.automatic['platform_family'] = 'rhel'
         node.automatic['init_package'] = 'systemd'
-        node.automatic['consul']['config']['datacenter'] = 'dc1'
-        node.automatic['consul']['config']['encrypt'] = 'Dt3P9SpKGAR/DIUN1cDirg=='
-        node.automatic['consul']['version_purge'] = true
+        node.set['consul']['config']['datacenter'] = 'dc1'
+        node.set['consul']['config']['encrypt'] = 'Dt3P9SpKGAR/DIUN1cDirg=='
+        node.set['consul']['version_purge'] = true
       end.converge(described_recipe)
     end
 
     include_examples 'consul'
     include_examples 'systemd'
     include_examples 'linux'
+  end
+
+  context 'windows' do
+    let(:chef_run) do
+      ChefSpec::SoloRunner.new(platform: 'windows', version: '2012R2') do |node|
+        node.automatic['platform_family'] = 'windows'
+        node.set['consul']['config']['datacenter'] = 'dc1'
+        node.set['consul']['config']['encrypt'] = 'Dt3P9SpKGAR/DIUN1cDirg=='
+        node.set['consul']['version_purge'] = true
+      end.converge(described_recipe)
+    end
+
+    include_examples 'windows'
   end
 end

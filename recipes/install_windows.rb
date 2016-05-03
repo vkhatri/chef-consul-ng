@@ -1,6 +1,6 @@
 #
 # Cookbook Name:: consul-ng
-# Recipe:: install
+# Recipe:: install_windows
 #
 # Copyright 2015, Virender Khatri
 #
@@ -17,11 +17,17 @@
 # limitations under the License.
 #
 
-node['consul']['packages'].each do |p|
-  package p
-end
+node.default['consul']['conf_dir'] = ::File.join('C:', node['consul']['conf_dir'])
+node.default['consul']['conf_file'] = ::File.join('C:', node['consul']['conf_file'])
+node.default['consul']['parent_dir'] = ::File.join('C:', node['consul']['parent_dir'])
+node.default['consul']['log_dir'] = ::File.join('C:', node['consul']['log_dir'])
+node.default['consul']['pid_dir'] = ::File.join('C:', node['consul']['pid_dir'])
+node.default['consul']['config']['data_dir'] = ::File.join('C:', node['consul']['config']['data_dir'])
 
-include_recipe 'consul-ng::user'
+node.default['consul']['scripts_dir'] = ::File.join(node['consul']['parent_dir'], 'scripts')
+node.default['consul']['install_dir'] = ::File.join(node['consul']['parent_dir'], 'consul')
+node.default['consul']['version_dir'] = ::File.join(node['consul']['parent_dir'], node['consul']['version'])
+node.default['consul']['config']['ui_dir'] = ::File.join(node['consul']['install_dir'], 'dist') if node['consul']['enable_webui']
 
 [node['consul']['parent_dir'],
  node['consul']['version_dir'],
@@ -32,20 +38,16 @@ include_recipe 'consul-ng::user'
  node['consul']['log_dir']
 ].each do |dir|
   directory dir do
-    owner node['consul']['user']
-    group node['consul']['group']
-    mode node['consul']['mode']
     recursive true
   end
 end
 
 package_url = if node['consul']['package_url'] == 'auto'
-                "https://releases.hashicorp.com/consul/#{node['consul']['version']}/consul_#{node['consul']['version']}_linux_#{package_arch}.zip"
+                "https://releases.hashicorp.com/consul/#{node['consul']['version']}/consul_#{node['consul']['version']}_#{node['os']}_#{package_arch}.zip"
               else
                 node['consul']['package_url']
               end
 
-package_file = ::File.join(node['consul']['version_dir'], ::File.basename(package_url))
 package_checksum = consul_sha256sum(node['consul']['version'])
 
 webui_package_url = if node['consul']['webui_package_url'] == 'auto'
@@ -54,54 +56,37 @@ webui_package_url = if node['consul']['webui_package_url'] == 'auto'
                       node['consul']['webui_package_url']
                     end
 
-webui_package_file = ::File.join(node['consul']['version_dir'], ::File.basename(webui_package_url))
 webui_package_checksum = webui_sha256sum(node['consul']['version'])
 
-remote_file 'consul_package_file' do
-  path package_file
+windows_zipfile node['consul']['version_dir'] do
   source package_url
   checksum package_checksum
+  action :unzip
+  not_if { ::File.exist?(::File.join(node['consul']['version_dir'], 'consul.exe')) }
 end
 
-remote_file 'webui_package_file' do
-  path webui_package_file
+ui_dir = node['consul']['version'] >= '0.6.0' ? ::File.join(node['consul']['version_dir'], 'dist') : node['consul']['version_dir']
+windows_zipfile ui_dir do
   source webui_package_url
   checksum webui_package_checksum
-end
-
-execute 'extract_consul_package_file' do
-  user node['consul']['user']
-  group node['consul']['group']
-  umask node['consul']['umask']
-  cwd node['consul']['version_dir']
-  command "unzip #{package_file}"
-  creates ::File.join(node['consul']['version_dir'], 'consul')
-end
-
-execute 'extract_webui_package_file' do
-  user node['consul']['user']
-  group node['consul']['group']
-  umask node['consul']['umask']
-  cwd node['consul']['version_dir']
-  command node['consul']['version'] >= '0.6.0' ? "unzip #{webui_package_file} -d dist" : "unzip #{webui_package_file}"
-  creates ::File.join(node['consul']['version_dir'], 'dist', 'index.html')
+  action :unzip
+  not_if { ::File.exist?(::File.join(node['consul']['version_dir'], 'dist', 'index.html')) }
 end
 
 link node['consul']['install_dir'] do
   to node['consul']['version_dir']
-  notifies :restart, 'service[consul]'
+  notifies :restart, 'service[consul]', :delayed
 end
 
-link '/usr/bin/consul' do
-  to ::File.join(node['consul']['install_dir'], 'consul')
-  only_if { node['os'] == 'linux' }
+windows_path node['consul']['install_dir'] do
+  action :add
 end
 
 # purge older versions
 ruby_block 'purge_old_versions' do
   block do
     require 'fileutils'
-    installed_versions = Dir.entries(node['consul']['parent_dir']).reject { |a| a =~ /^\.{1,2}$|^consul$/ }.sort
+    installed_versions = Dir.entries(node['consul']['parent_dir']).reject { |a| a =~ /^\.{1,2}$|^[a-zA-Z]/ }.sort
     old_versions = installed_versions - [node['consul']['version']]
 
     old_versions.each do |v|
