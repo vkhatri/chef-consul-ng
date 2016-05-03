@@ -73,34 +73,32 @@ class Chef
         if current_acl.nil?
           Diplomat::Acl.create(acl_payload)
           return true
-        else
-          if acl_payload_string?
-            # enforce supplied rules, string forms HCL string
-            if current_acl['Rules'] != acl_payload['Rules']
-              Diplomat::Acl.update(acl_payload)
-              return true
-            else
-              return false
-            end
+        elsif acl_payload_string?
+          # enforce supplied rules, string forms HCL string
+          if current_acl['Rules'] != acl_payload['Rules']
+            Diplomat::Acl.update(acl_payload)
+            return true
           else
-            # enforce supplied rules, hash forms json
-            begin
-              # expecting existing rules to be JSON
-              current_rules = JSON.parse(current_acl['Rules'])
-              diff = (new_resource.rules.to_a - current_rules.to_a)
-              if diff.empty?
-                return false
-              else
-                Diplomat::Acl.update(acl_payload)
-                return true
-              end
-            rescue => error
-              # if encounter an error in JSON.parse exisitng rules,
-              # simply update with new acl
+            return false
+          end
+        else
+          # enforce supplied rules, hash forms json
+          begin
+            # expecting existing rules to be JSON
+            current_rules = JSON.parse(current_acl['Rules'])
+            diff = (new_resource.rules.to_a - current_rules.to_a)
+            if diff.empty?
+              return false
+            else
               Diplomat::Acl.update(acl_payload)
-              Chef::Log.warning("consul_acl[#{new_resource.name}] existing Rules were overwritten with new Rules, encountered error (#{error})")
               return true
             end
+          rescue => error
+            # if encounter an error in JSON.parse exisitng rules,
+            # simply update with new acl
+            Diplomat::Acl.update(acl_payload)
+            Chef::Log.warning("consul_acl[#{new_resource.name}] existing Rules were overwritten with new Rules, encountered error (#{error})")
+            return true
           end
         end
       end
