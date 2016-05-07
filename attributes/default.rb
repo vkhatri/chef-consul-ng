@@ -1,4 +1,4 @@
-default['consul']['version'] = '0.6.3'
+default['consul']['version'] = '0.6.4'
 default['consul']['disable_service'] = false
 
 default['consul']['packages'] = %w(unzip)
@@ -83,3 +83,4 @@ default['consul']['config']['ports']['http'] = 8_500
 # default['consul']['config']['recursors'] =
 # default['consul']['config']['monitor-retry'] =
 # default['consul']['config']['dev'] =
+# default['consul']['config']['disable_hostname'] =
