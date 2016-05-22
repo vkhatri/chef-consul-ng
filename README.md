@@ -1,7 +1,7 @@
 consul-ng Cookbook
 ================
 
-[![Cookbook](http://img.shields.io/badge/cookbook-v0.1.0-green.svg)](https://github.com/vkhatri/chef-consul-ng)[![Build Status](https://travis-ci.org/vkhatri/chef-consul-ng.svg?branch=master)](https://travis-ci.org/vkhatri/chef-consul-ng)
+[![Cookbook](http://img.shields.io/badge/cookbook-v0.1.2-green.svg)](https://github.com/vkhatri/chef-consul-ng)[![Build Status](https://travis-ci.org/vkhatri/chef-consul-ng.svg?branch=master)](https://travis-ci.org/vkhatri/chef-consul-ng)
 
 This is a [Chef] cookbook to manage [Consul].
 
@@ -12,7 +12,7 @@ This is a [Chef] cookbook to manage [Consul].
 ## Most Recent Release
 
 ```
-cookbook 'consul-ng', '~> 0.1.0'
+cookbook 'consul-ng', '~> 0.1.2'
 ```
 
 ## From Git
@@ -38,7 +38,7 @@ This cookbook was tested on Amazon & Ubuntu & Centos7 Linux & Windows2012R2 and 
 - `consul::user` - setup consul user/group
 
 - `consul::install` - install consul
-- 
+-
 - `consul::install_windows` - install consul on windows
 
 - `consul::config` - configure consul
@@ -47,7 +47,7 @@ This cookbook was tested on Amazon & Ubuntu & Centos7 Linux & Windows2012R2 and 
 ## Advanced Attributes
 
 
-* `default['consul']['version']` (default: `0.6.0`): consul version
+* `default['consul']['version']` (default: `0.6.4`): consul version
 
 * `default['consul']['packages']` (default: `['unzip']`): package dependencies
 
@@ -68,6 +68,10 @@ This cookbook was tested on Amazon & Ubuntu & Centos7 Linux & Windows2012R2 and 
 * `default['consul']['diplomat_gem_version']` (default: `nil`): diplomat chef gem version
 
 * `default['consul']['install_diplomat_gem']` (default: `true`): install diplomat chef gem
+
+* `default['consul']['configure']` (default: `true`): configure consul
+
+* `default['consul']['install']` (default: `true`): install consul
 
 
 ## Core Attributes
