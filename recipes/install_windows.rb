@@ -35,8 +35,7 @@ node.default['consul']['config']['ui_dir'] = ::File.join(node['consul']['install
  node['consul']['scripts_dir'],
  node['consul']['pid_dir'],
  node['consul']['config']['data_dir'],
- node['consul']['log_dir']
-].each do |dir|
+ node['consul']['log_dir']].each do |dir|
   directory dir do
     recursive true
     only_if { node['consul']['install'] }

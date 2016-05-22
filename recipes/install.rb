@@ -29,8 +29,7 @@ include_recipe 'consul-ng::user'
  node['consul']['scripts_dir'],
  node['consul']['pid_dir'],
  node['consul']['config']['data_dir'],
- node['consul']['log_dir']
-].each do |dir|
+ node['consul']['log_dir']].each do |dir|
   directory dir do
     owner node['consul']['user']
     group node['consul']['group']
