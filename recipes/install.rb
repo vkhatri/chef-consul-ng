@@ -36,6 +36,7 @@ include_recipe 'consul-ng::user'
     group node['consul']['group']
     mode node['consul']['mode']
     recursive true
+    only_if { node['consul']['install'] }
   end
 end
 
@@ -46,7 +47,7 @@ package_url = if node['consul']['package_url'] == 'auto'
               end
 
 package_file = ::File.join(node['consul']['version_dir'], ::File.basename(package_url))
-package_checksum = consul_sha256sum(node['consul']['version'])
+package_checksum = node['consul']['install'] ? consul_sha256sum(node['consul']['version']) : nil
 
 webui_package_url = if node['consul']['webui_package_url'] == 'auto'
                       "https://releases.hashicorp.com/consul/#{node['consul']['version']}/consul_#{node['consul']['version']}_web_ui.zip"
@@ -55,18 +56,20 @@ webui_package_url = if node['consul']['webui_package_url'] == 'auto'
                     end
 
 webui_package_file = ::File.join(node['consul']['version_dir'], ::File.basename(webui_package_url))
-webui_package_checksum = webui_sha256sum(node['consul']['version'])
+webui_package_checksum = node['consul']['install'] ? webui_sha256sum(node['consul']['version']) : nil
 
 remote_file 'consul_package_file' do
   path package_file
   source package_url
   checksum package_checksum
+  only_if { node['consul']['install'] }
 end
 
 remote_file 'webui_package_file' do
   path webui_package_file
   source webui_package_url
   checksum webui_package_checksum
+  only_if { node['consul']['install'] }
 end
 
 execute 'extract_consul_package_file' do
@@ -76,6 +79,7 @@ execute 'extract_consul_package_file' do
   cwd node['consul']['version_dir']
   command "unzip #{package_file}"
   creates ::File.join(node['consul']['version_dir'], 'consul')
+  only_if { node['consul']['install'] }
 end
 
 execute 'extract_webui_package_file' do
@@ -85,16 +89,18 @@ execute 'extract_webui_package_file' do
   cwd node['consul']['version_dir']
   command node['consul']['version'] >= '0.6.0' ? "unzip #{webui_package_file} -d dist" : "unzip #{webui_package_file}"
   creates ::File.join(node['consul']['version_dir'], 'dist', 'index.html')
+  only_if { node['consul']['install'] }
 end
 
 link node['consul']['install_dir'] do
   to node['consul']['version_dir']
   notifies :restart, 'service[consul]'
+  only_if { node['consul']['install'] }
 end
 
 link '/usr/bin/consul' do
   to ::File.join(node['consul']['install_dir'], 'consul')
-  only_if { node['os'] == 'linux' }
+  only_if { node['consul']['install'] && node['os'] == 'linux' }
 end
 
 # purge older versions
@@ -111,19 +117,19 @@ ruby_block 'purge_old_versions' do
       Chef::Log.warn("deleted consul older version #{v}")
     end
   end
-  only_if { node['consul']['version_purge'] }
+  only_if { node['consul']['install'] && node['consul']['version_purge'] }
 end
 
 if Chef::Resource::ChefGem.method_defined?(:compile_time)
   chef_gem 'diplomat' do
     compile_time true
     version node['consul']['diplomat_gem_version'] if node['consul']['diplomat_gem_version']
-    only_if { node['consul']['install_diplomat_gem'] }
+    only_if { node['consul']['install'] && node['consul']['install_diplomat_gem'] }
   end
 else
   chef_gem 'diplomat' do
     version node['consul']['diplomat_gem_version'] if node['consul']['diplomat_gem_version']
     action :nothing
-    only_if { node['consul']['install_diplomat_gem'] }
+    only_if { node['consul']['install'] && node['consul']['install_diplomat_gem'] }
   end.run_action(:install)
 end

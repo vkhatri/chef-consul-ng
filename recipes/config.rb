@@ -21,6 +21,7 @@ file 'consul_config_file' do
   path node['consul']['conf_file']
   content JSON.pretty_generate(node['consul']['config'])
   notifies :restart, 'service[consul]' if node['consul']['notify_restart'] && !node['consul']['disable_service']
+  only_if { node['consul']['configure'] }
 end
 
 template 'consul_systemd_file' do
@@ -28,7 +29,7 @@ template 'consul_systemd_file' do
   source "systemd.#{node['platform_family']}.erb"
   mode 0744
   notifies :restart, 'service[consul]' if node['consul']['notify_restart'] && !node['consul']['disable_service']
-  only_if { node['init_package'] == 'systemd' }
+  only_if { node['consul']['configure'] && node['init_package'] == 'systemd' }
 end
 
 template 'consul_initd_file' do
@@ -36,7 +37,7 @@ template 'consul_initd_file' do
   source "initd.#{node['platform_family']}.erb"
   mode 0744
   notifies :restart, 'service[consul]' if node['consul']['notify_restart'] && !node['consul']['disable_service']
-  only_if { %w(init sshd).include? node['init_package'] }
+  only_if { node['consul']['configure'] && (%w(init sshd).include? node['init_package']) }
 end
 
 if node['os'] == 'windows'
@@ -56,6 +57,7 @@ if node['os'] == 'windows'
       AppStderr: ::File.join(node['consul']['log_dir'], 'error.log')
     )
     start false
+    only_if { node['consul']['configure'] }
     action :install
   end
 end
