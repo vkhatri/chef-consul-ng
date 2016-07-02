@@ -9,3 +9,4 @@ branches:
 # script: bundle exec rspec spec
 script:
   - bundle exec rake lint
+sudo: required
