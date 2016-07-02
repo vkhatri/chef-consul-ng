@@ -15,7 +15,7 @@ default['consul']['setup_user'] = true
 
 default['consul']['enable_webui'] = false
 
-default['consul']['mode'] = 0754
+default['consul']['mode'] = 0o0754
 default['consul']['umask'] = 0023
 
 default['consul']['conf_dir'] = '/etc/consul'
