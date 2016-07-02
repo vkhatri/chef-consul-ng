@@ -27,7 +27,7 @@ end
 template 'consul_systemd_file' do
   path '/etc/systemd/system/consul.service'
   source "systemd.#{node['platform_family']}.erb"
-  mode 0744
+  mode 0o0744
   notifies :restart, 'service[consul]' if node['consul']['notify_restart'] && !node['consul']['disable_service']
   only_if { node['consul']['configure'] && node['init_package'] == 'systemd' }
 end
@@ -35,7 +35,7 @@ end
 template 'consul_initd_file' do
   path '/etc/init.d/consul'
   source "initd.#{node['platform_family']}.erb"
-  mode 0744
+  mode 0o0744
   notifies :restart, 'service[consul]' if node['consul']['notify_restart'] && !node['consul']['disable_service']
   only_if { node['consul']['configure'] && (%w(init sshd).include? node['init_package']) }
 end
