@@ -44,7 +44,7 @@ class Chef
           raise 'must define one of resource attribute - :script_content, :cookbook_template or :cookbook_file'
         end
         t.path ::File.join(node['consul']['scripts_dir'], new_resource.name)
-        t.mode 0755
+        t.mode 0o0755
         t.run_action action
         t.updated?
       end
