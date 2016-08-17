@@ -70,7 +70,7 @@ module ConsulJoinHelper
       Chef::Log.warn('This recipe uses search. Chef Solo does not support search.')
     else
       search(
-        :node, 'consul_config_server:true AND consul_config_datacenter:\"' + datacenter + '\"',
+        :node, "consul_config_server:true AND consul_config_datacenter:#{datacenter}",
         :filter_result => { 'ip' => ['ipaddress'] }
       ).each do |result|
         unless excludeself && (result['ip'] == node['ipaddress'])
