@@ -38,7 +38,7 @@ This cookbook was tested on Amazon & Ubuntu & Centos7 Linux & Windows2012R2 and 
 - `consul::user` - setup consul user/group
 
 - `consul::install` - install consul
--
+
 - `consul::install_windows` - install consul on windows
 
 - `consul::config` - configure consul
