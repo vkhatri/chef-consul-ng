@@ -3,6 +3,24 @@ consul-ng CHANGELOG
 
 This file is used to list changes made in each version of the consul-ng cookbook.
 
+0.1.4
+-----
+
+- Virender Khatri - Update Consul version to 0.7.0
+
+0.1.3
+-----
+
+- JustGav - Create systemd.debian.erb
+
+- JustGav - Fix Travis
+
+- JustGav - Added kitchen Ubuntu 16.04
+
+- Daan de Goede - Fix for Search is not working with double quotes around the datacenter string
+
+- Virender Khatri - Fix travis build
+
 0.1.2
 -----
 
