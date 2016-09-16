@@ -1,4 +1,4 @@
-default['consul']['version'] = '0.6.4'
+default['consul']['version'] = '0.7.0'
 default['consul']['disable_service'] = false
 
 default['consul']['packages'] = %w(unzip)

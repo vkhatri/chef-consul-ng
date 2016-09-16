@@ -13,15 +13,14 @@ provisioner:
 platforms:
   - name: ubuntu-16.04
   - name: ubuntu-14.04
-  - name: centos-6.5
-  - name: centos-7
-  - name: windows2012r2
-    driver_config:
-      #box_url: https://wrock.blob.core.windows.net/vhds/vbox2012r2.box
+  - name: centos-6.8
+  - name: centos-7.2
+  - name: windows-2012R2
+    driver:
+      box: mwrock/Windows2012R2
+      guest: windows
       communicator: winrm
-      vm_hostname: false    
-    transport:
-      name: winrm
+      gui: false
 
 suites:
   - name: default

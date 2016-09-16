@@ -21,7 +21,7 @@ describe 'consul-ng::default' do
         expect(chef_run).to create_user('consul').with(system: true)
       end
 
-      %w(/etc/consul /usr/local/consul /usr/local/consul/0.6.4 /var/lib/consul /var/log/consul /var/run/consul /usr/local/consul/scripts).each do |d|
+      %w(/etc/consul /usr/local/consul /usr/local/consul/0.7.0 /var/lib/consul /var/log/consul /var/run/consul /usr/local/consul/scripts).each do |d|
         it "it creates directory #{d}" do
           expect(chef_run).to create_directory(d)
         end

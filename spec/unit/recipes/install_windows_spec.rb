@@ -3,18 +3,18 @@ require 'spec_helper'
 describe 'consul-ng::install_windows' do
   shared_examples_for 'consul' do
     context 'windows' do
-      %w(C:/usr/local/consul C:/usr/local/consul/0.6.4 C:/etc/consul C:/usr/local/consul/scripts C:/var/run/consul C:/var/lib/consul C:/var/log/consul).each do |d|
+      %w(C:/usr/local/consul C:/usr/local/consul/0.7.0 C:/etc/consul C:/usr/local/consul/scripts C:/var/run/consul C:/var/lib/consul C:/var/log/consul).each do |d|
         it "it creates directory #{d}" do
           expect(chef_run).to create_directory(d)
         end
       end
 
       it 'download and unzip package' do
-        expect(chef_run).to unzip_windows_zipfile_to('C:/usr/local/consul/0.6.4')
+        expect(chef_run).to unzip_windows_zipfile_to('C:/usr/local/consul/0.7.0')
       end
 
       it 'download and unzip webuipackage' do
-        expect(chef_run).to unzip_windows_zipfile_to('C:/usr/local/consul/0.6.4/dist')
+        expect(chef_run).to unzip_windows_zipfile_to('C:/usr/local/consul/0.7.0/dist')
       end
 
       it 'link C:/usr/local/consul/consul to current package version directory' do

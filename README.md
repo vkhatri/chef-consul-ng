@@ -47,7 +47,7 @@ This cookbook was tested on Amazon & Ubuntu & Centos7 Linux & Windows2012R2 and 
 ## Advanced Attributes
 
 
-* `default['consul']['version']` (default: `0.6.4`): consul version
+* `default['consul']['version']` (default: `0.7.0`): consul version
 
 * `default['consul']['packages']` (default: `['unzip']`): package dependencies
 
