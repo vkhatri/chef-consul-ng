@@ -12,7 +12,7 @@ class Chef
         @provides = :consul_acl
         @provider = Chef::Provider::ConsulAcl
         @action = :create
-        @allowed_actions = [:create, :delete, :nothing]
+        @allowed_actions = %i[create delete nothing]
         @name = name
       end
 
@@ -36,7 +36,7 @@ class Chef
         set_or_return(
           :type, arg,
           :kind_of => String,
-          :equal_to => %w(client management),
+          :equal_to => %w[client management],
           :default => 'client'
         )
       end

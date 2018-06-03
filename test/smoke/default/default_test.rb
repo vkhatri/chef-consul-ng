@@ -22,8 +22,7 @@ if os.linux?
   end
 end
 
-# %w(/etc/consul /usr/local/consul /usr/local/consul/1.1.0 /var/lib/consul /var/log/consul /var/run/consul /usr/local/consul/scripts).each do |d|
-%w(/etc/consul /usr/local/consul /var/lib/consul /var/log/consul /var/run/consul /usr/local/consul/scripts).each do |d|
+%w[/etc/consul /usr/local/consul /usr/local/consul/1.1.0 /var/lib/consul /var/log/consul /var/run/consul /usr/local/consul/scripts].each do |d|
   describe directory(d.to_s) do
     it { should exist }
   end
@@ -36,7 +35,7 @@ end
   end
 end
 
-%w(/etc/consul/000-consul.json).each do |f|
+%w[/etc/consul/000-consul.json].each do |f|
   # restricted permissions on config file
   describe file(f.to_s) do
     it { should exist }

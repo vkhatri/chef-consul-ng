@@ -5,7 +5,7 @@ class Chef
       provides :consul_check if respond_to?(:provides)
 
       use_inline_resources
-      
+
       def initialize(*args)
         super
       end

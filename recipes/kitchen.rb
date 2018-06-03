@@ -24,5 +24,5 @@
 end
 
 service 'httpd' do
-  action [:enable, :start]
+  action %i[enable start]
 end

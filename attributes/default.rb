@@ -1,7 +1,7 @@
 default['consul']['version'] = '1.1.0'
 default['consul']['disable_service'] = false
 
-default['consul']['packages'] = %w(unzip)
+default['consul']['packages'] = %w[unzip]
 
 default['consul']['notify_restart'] = true
 default['consul']['version_purge'] = false

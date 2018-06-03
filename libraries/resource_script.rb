@@ -12,7 +12,7 @@ class Chef
         @provides = :consul_script
         @provider = Chef::Provider::ConsulScript
         @action = :create
-        @allowed_actions = [:create, :delete, :nothing]
+        @allowed_actions = %i[create delete nothing]
         @name = name
       end
 

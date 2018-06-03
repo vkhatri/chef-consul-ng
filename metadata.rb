@@ -10,7 +10,7 @@ chef_version '>= 12.5' if respond_to?(:chef_version)
 source_url 'https://github.com/vkhatri/chef-consul-ng' if respond_to?(:source_url)
 issues_url 'https://github.com/vkhatri/chef-consul-ng/issues' if respond_to?(:issues_url)
 
-%w(ubuntu centos amazon redhat fedora windows).each do |os|
+%w[ubuntu centos amazon redhat fedora windows].each do |os|
   supports os
 end
 

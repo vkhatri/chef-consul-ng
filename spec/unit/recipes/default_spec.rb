@@ -7,7 +7,7 @@ describe 'consul-ng::default' do
         expect(chef_run).to install_package('unzip')
       end
 
-      %w(install config).each do |r|
+      %w[install config].each do |r|
         it "include recipe consul::#{r}" do
           expect(chef_run).to include_recipe("consul-ng::#{r}")
         end
@@ -21,7 +21,7 @@ describe 'consul-ng::default' do
         expect(chef_run).to create_user('consul').with(system: true)
       end
 
-      %w(/etc/consul /usr/local/consul /usr/local/consul/1.1.0 /var/lib/consul /var/log/consul /var/run/consul /usr/local/consul/scripts).each do |d|
+      %w[/etc/consul /usr/local/consul /usr/local/consul/1.1.0 /var/lib/consul /var/log/consul /var/run/consul /usr/local/consul/scripts].each do |d|
         it "it creates directory #{d}" do
           expect(chef_run).to create_directory(d)
         end
@@ -88,7 +88,7 @@ describe 'consul-ng::default' do
 
   shared_examples_for 'windows' do
     context 'windows systems' do
-      %w(install_windows config).each do |r|
+      %w[install_windows config].each do |r|
         it "include recipe consul::#{r}" do
           expect(chef_run).to include_recipe("consul-ng::#{r}")
         end

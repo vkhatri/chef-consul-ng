@@ -5,7 +5,7 @@ class Chef
       provides :consul_acl if respond_to?(:provides)
 
       use_inline_resources
-      
+
       def initialize(*args)
         super
       end
@@ -46,7 +46,7 @@ class Chef
       end
 
       def check_current_acl
-        filter_keys = %w(Name ID Type Rules)
+        filter_keys = %w[Name ID Type Rules]
         current = Diplomat::Acl.info(new_resource.id).first
         if current.nil?
           return nil

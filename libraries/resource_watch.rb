@@ -13,7 +13,7 @@ class Chef
         @provides = :consul_watch
         @provider = Chef::Provider::ConsulWatch
         @action = :create
-        @allowed_actions = [:create, :delete, :nothing]
+        @allowed_actions = %i[create delete nothing]
         @name = name
       end
 
@@ -21,7 +21,7 @@ class Chef
         set_or_return(
           :type, arg,
           :kind_of => String,
-          :equal_to => %w(checks event key keyprefix nodes service services),
+          :equal_to => %w[checks event key keyprefix nodes service services],
           :default => nil
         )
       end
@@ -54,7 +54,7 @@ class Chef
         set_or_return(
           :handler_type, arg,
           :kind_of => String,
-          :equal_to => %w(script http),
+          :equal_to => %w[script http],
           :default => nil
         )
       end
