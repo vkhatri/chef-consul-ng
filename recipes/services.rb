@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: elasticsearch-cluster
-# Recipe:: user
+# Cookbook Name:: consul-ng
+# Recipe:: services
 #
-# Copyright 2015, Virender Khatri
+# Copyright 2018, Joshua Colson
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,16 +17,15 @@
 # limitations under the License.
 #
 
-group node['consul']['group'] do
-  system true
-  action :create
-  only_if { node['consul']['setup_user'] }
-end
-
-user node['consul']['user'] do
-  system true
-  shell '/bin/false'
-  gid node['consul']['group']
-  action :create
-  only_if { node['consul']['setup_user'] }
+node['consul']['services'].each do |item|
+  consul_service item['name'] do
+    id item['id']
+    name item['name']
+    tags item['tags']
+    address item['address']
+    port item['port']
+    enable_tag_override item['enable_tag_override']
+    checks item['checks']
+    token item['token']
+  end
 end

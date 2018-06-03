@@ -45,8 +45,8 @@ if node['os'] == 'windows'
 
   nssm 'consul' do
     program ::File.join(node['consul']['install_dir'], 'consul.exe')
-    args %(agent -config-dir="""#{node['consul']['conf_dir']}""")
-    params(
+    args %(agent -config-dir="#{node['consul']['conf_dir']}")
+    parameters(
       AppDirectory: node['consul']['install_dir'],
       AppStdoutCreationDisposition: 4,
       AppStderrCreationDisposition: 4,

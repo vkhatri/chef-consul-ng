@@ -54,20 +54,10 @@ webui_package_url = if node['consul']['webui_package_url'] == 'auto'
                       node['consul']['webui_package_url']
                     end
 
-webui_package_file = ::File.join(node['consul']['version_dir'], ::File.basename(webui_package_url))
-webui_package_checksum = node['consul']['install'] ? webui_sha256sum(node['consul']['version']) : nil
-
 remote_file 'consul_package_file' do
   path package_file
   source package_url
   checksum package_checksum
-  only_if { node['consul']['install'] }
-end
-
-remote_file 'webui_package_file' do
-  path webui_package_file
-  source webui_package_url
-  checksum webui_package_checksum
   only_if { node['consul']['install'] }
 end
 
@@ -81,14 +71,26 @@ execute 'extract_consul_package_file' do
   only_if { node['consul']['install'] }
 end
 
-execute 'extract_webui_package_file' do
-  user node['consul']['user']
-  group node['consul']['group']
-  umask node['consul']['umask']
-  cwd node['consul']['version_dir']
-  command node['consul']['version'] >= '0.6.0' ? "unzip #{webui_package_file} -d dist" : "unzip #{webui_package_file}"
-  creates ::File.join(node['consul']['version_dir'], 'dist', 'index.html')
-  only_if { node['consul']['install'] }
+if Gem::Version.new(node['consul']['version']) < Gem::Version.new('0.9.0')
+  webui_package_file = ::File.join(node['consul']['version_dir'], ::File.basename(webui_package_url))
+  webui_package_checksum = node['consul']['install'] ? webui_sha256sum(node['consul']['version']) : nil
+
+  remote_file 'webui_package_file' do
+    path webui_package_file
+    source webui_package_url
+    checksum webui_package_checksum
+    only_if { node['consul']['install'] }
+  end
+
+  execute 'extract_webui_package_file' do
+    user node['consul']['user']
+    group node['consul']['group']
+    umask node['consul']['umask']
+    cwd node['consul']['version_dir']
+    command node['consul']['version'] >= '0.6.0' ? "unzip #{webui_package_file} -d dist" : "unzip #{webui_package_file}"
+    creates ::File.join(node['consul']['version_dir'], 'dist', 'index.html')
+    only_if { node['consul']['install'] && Gem::Version.new(node['consul']['version']) < Gem::Version.new('1.1.0') }
+  end
 end
 
 link node['consul']['install_dir'] do

@@ -47,6 +47,14 @@ class Chef
           :default => nil
         )
       end
+
+      def template_variables(arg = nil)
+        set_or_return(
+          :template_variables, arg,
+          :kind_of => Hash,
+          :default => nil
+        )
+      end
     end
   end
 end

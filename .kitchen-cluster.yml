@@ -1,0 +1,181 @@
+---
+# run with:
+# user@host:~> export KITCHEN_YAML=.kitchen-cluster.yml
+# user@host:~> kitchen verify
+
+driver_plugin: vagrant
+
+driver_config:
+  require_chef_omnibus: true
+  box: bento-VAGRANTSLASH-centos-7.4
+  box_url: https://vagrantcloud.com/bento/centos-7.4
+
+provisioner:
+  name: chef_zero
+  always_update_cookbooks: true
+  # client_rb:
+  #   environment: dev
+  attributes:
+    consul:
+      config:
+        datacenter: dc1
+        domain: dev
+        encrypt: Dt3P9SpKGAR/DIUN1cDirg==
+
+verifier:
+  name: inspec
+
+platforms:
+- name: server-1
+  # run_list:
+  # - role[postmaster]
+  driver_config:
+    customize:
+      memory: 1024
+    network:
+      - ['private_network', {ip: '192.168.19.11'}]
+  verifier:
+    inspec_tests:
+      - test/smoke/default
+      - test/smoke/server
+  attributes:
+    consul:
+      config:
+        bootstrap: true
+        server: true
+        bind_addr: 192.168.19.11
+        client_addr: 127.0.0.1
+
+- name: server-2
+  # run_list:
+  # - role[relayhost]
+  driver_config:
+    customize:
+      memory: 1024
+    network:
+      - ['private_network', {ip: '192.168.19.12'}]
+  verifier:
+    inspec_tests:
+      - test/smoke/default
+      - test/smoke/server
+  attributes:
+    consul:
+      config:
+        # bootstrap_expect: 3
+        retry_join: ['192.168.19.11']
+        server: true
+        bind_addr: 192.168.19.12
+        client_addr: 127.0.0.1
+
+- name: server-3
+  # run_list:
+  # - role[relayhost]
+  driver_config:
+    customize:
+      memory: 1024
+    network:
+      - ['private_network', {ip: '192.168.19.13'}]
+  verifier:
+    inspec_tests:
+      - test/smoke/default
+      - test/smoke/server
+  attributes:
+    consul:
+      config:
+        # bootstrap_expect: 3
+        retry_join: ['192.168.19.11']
+        server: true
+        bind_addr: 192.168.19.13
+        client_addr: 127.0.0.1
+
+- name: client-1
+  run_list:
+    - recipe[consul-ng::default]
+    - recipe[consul-ng::services]
+    - recipe[consul-ng::watches]
+    - recipe[consul-ng::kitchen]
+  driver_config:
+    network:
+      - ['private_network', {ip: '192.168.19.21'}]
+  verifier:
+    inspec_tests:
+      - test/smoke/default
+      - test/smoke/client
+  attributes:
+    consul:
+      config:
+        start_join: ['192.168.19.11']
+        bind_addr: 192.168.19.21
+        client_addr: 127.0.0.1
+      services:
+        - name: web
+          port: 80
+        - name: proxy
+          port: 8080
+          tags: ['rails']
+      watches:
+        - handler_type: script
+          name: new-nodes
+          type: nodes
+          args: ['/bin/sh', '-c', 'cat', '>', '/tmp/nodes.lst']
+
+- name: client-2
+  run_list:
+    - recipe[consul-ng::default]
+    - recipe[consul-ng::services]
+    - recipe[consul-ng::scripts]
+    - recipe[consul-ng::checks]
+    - recipe[consul-ng::kitchen]
+    - recipe[consul-ng::watches]
+  driver_config:
+    network:
+      - ['private_network', {ip: '192.168.19.22'}]
+  verifier:
+    inspec_tests:
+      - test/smoke/default
+      - test/smoke/client
+  attributes:
+    consul:
+      config:
+        start_join: ['192.168.19.11']
+        bind_addr: 192.168.19.22
+        client_addr: 127.0.0.1
+      services:
+        - name: web
+          port: 80
+        - name: proxy
+          port: 8080
+          tags: ['rails', 'node', 'grafana']
+      scripts:
+        - name: web_alive
+          script_content: curl -s http://localhost/
+        - name: book_file
+          cookbook: consul-ng
+          cookbook_file: web-test.sh
+        - name: template
+          cookbook: consul-ng
+          cookbook_template: web-test.sh.erb
+      checks:
+        - name: web-alive
+          tcp: localhost:80
+          interval: 30s
+          service_id: web
+      watches:
+        - handler_type: script
+          name: key-web
+          type: key
+          key: web
+          args: ['cat']
+
+suites:
+  - name: consul
+    run_list:
+      - recipe[consul-ng::default]
+      - recipe[consul-ng::kitchen]
+    attributes:
+      consul:
+        version: 1.1.0
+    # verifier:
+    #   inspec_tests:
+    #     - test/smoke/default
+

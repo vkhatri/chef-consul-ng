@@ -34,6 +34,39 @@ class Chef
         )
       end
 
+      def key(arg = nil)
+        set_or_return(
+          :key, arg,
+          :kind_of => String,
+          :default => nil
+        )
+      end
+
+      def args(arg = nil)
+        set_or_return(
+          :args, arg,
+          :kind_of => Array,
+          :default => nil
+        )
+      end
+
+      def handler_type(arg = nil)
+        set_or_return(
+          :handler_type, arg,
+          :kind_of => String,
+          :equal_to => %w(script http),
+          :default => nil
+        )
+      end
+
+      def http_handler_config(arg = nil)
+        set_or_return(
+          :http_handler_config, arg,
+          :kind_of => Hash,
+          :default => nil
+        )
+      end
+
       def handler(arg = nil)
         set_or_return(
           :handler, arg,

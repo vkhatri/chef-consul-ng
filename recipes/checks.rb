@@ -1,8 +1,8 @@
 #
-# Cookbook Name:: elasticsearch-cluster
-# Recipe:: user
+# Cookbook Name:: consul-ng
+# Recipe:: checks
 #
-# Copyright 2015, Virender Khatri
+# Copyright 2018, Joshua Colson
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,16 +17,20 @@
 # limitations under the License.
 #
 
-group node['consul']['group'] do
-  system true
-  action :create
-  only_if { node['consul']['setup_user'] }
-end
-
-user node['consul']['user'] do
-  system true
-  shell '/bin/false'
-  gid node['consul']['group']
-  action :create
-  only_if { node['consul']['setup_user'] }
+node['consul']['checks'].each do |item|
+  consul_check item['name'] do
+    id item['id']
+    name item['name']
+    script item['script']
+    args item['args']
+    http item['http']
+    tcp item['tcp']
+    ttl item['ttl']
+    docker_container_id item['docker_container_id']
+    shell item['shell']
+    timeout item['timeout']
+    interval item['interval']
+    service_id item['service_id']
+    initial_status item['initial_status']
+  end
 end
