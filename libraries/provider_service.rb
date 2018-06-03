@@ -4,6 +4,8 @@ class Chef
     class ConsulService < Chef::Provider
       provides :consul_service if respond_to?(:provides)
 
+      use_inline_resources
+      
       def initialize(*args)
         super
       end
@@ -17,11 +19,11 @@ class Chef
       end
 
       def action_create
-        new_resource.updated_by_last_action(service_file)
+        service_file
       end
 
       def action_delete
-        new_resource.updated_by_last_action(service_file)
+        service_file
       end
 
       protected

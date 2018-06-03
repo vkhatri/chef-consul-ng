@@ -4,6 +4,8 @@ class Chef
     class ConsulCheck < Chef::Provider
       provides :consul_check if respond_to?(:provides)
 
+      use_inline_resources
+      
       def initialize(*args)
         super
       end
@@ -17,11 +19,11 @@ class Chef
       end
 
       def action_create
-        new_resource.updated_by_last_action(check_file)
+        check_file
       end
 
       def action_delete
-        new_resource.updated_by_last_action(check_file)
+        check_file
       end
 
       protected
