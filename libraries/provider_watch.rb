@@ -4,6 +4,8 @@ class Chef
     class ConsulWatch < Chef::Provider
       provides :consul_watch if respond_to?(:provides)
 
+      use_inline_resources
+
       def initialize(*args)
         super
       end
@@ -17,21 +19,24 @@ class Chef
       end
 
       def action_create
-        new_resource.updated_by_last_action(check_file)
+        check_file
       end
 
       def action_delete
-        new_resource.updated_by_last_action(check_file)
+        check_file
       end
 
       protected
 
       def check_file
         action = new_resource.action.is_a?(Array) ? new_resource.action.first : new_resource.action
-        content = { 'name' => new_resource.name }
-        content['type'] = new_resource.type
+        content = { 'type' => new_resource.type }
         content['prefix'] = new_resource.prefix if new_resource.prefix
         content['handler'] = new_resource.handler if new_resource.handler
+        content['key'] = new_resource.key if new_resource.key
+        content['args'] = new_resource.args if new_resource.args
+        content['handler_type'] = new_resource.handler_type if new_resource.handler_type
+        content['http_handler_config'] = new_resource.http_handler_config if new_resource.http_handler_config
         content['datacenter'] = new_resource.datacenter if new_resource.datacenter
         content['token'] = new_resource.token if new_resource.token
 

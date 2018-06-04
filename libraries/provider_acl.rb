@@ -4,6 +4,8 @@ class Chef
     class ConsulAcl < Chef::Provider
       provides :consul_acl if respond_to?(:provides)
 
+      use_inline_resources
+
       def initialize(*args)
         super
       end
@@ -17,11 +19,11 @@ class Chef
       end
 
       def action_create
-        new_resource.updated_by_last_action(check_acl)
+        check_acl
       end
 
       def action_delete
-        new_resource.updated_by_last_action(check_acl)
+        check_acl
       end
 
       protected
@@ -44,7 +46,7 @@ class Chef
       end
 
       def check_current_acl
-        filter_keys = %w(Name ID Type Rules)
+        filter_keys = %w[Name ID Type Rules]
         current = Diplomat::Acl.info(new_resource.id).first
         if current.nil?
           return nil

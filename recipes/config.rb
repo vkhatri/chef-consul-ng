@@ -37,7 +37,7 @@ template 'consul_initd_file' do
   source "initd.#{node['platform_family']}.erb"
   mode 0o0744
   notifies :restart, 'service[consul]' if node['consul']['notify_restart'] && !node['consul']['disable_service']
-  only_if { node['consul']['configure'] && (%w(init sshd).include? node['init_package']) }
+  only_if { node['consul']['configure'] && (%w[init sshd].include? node['init_package']) }
 end
 
 if node['os'] == 'windows'
@@ -45,8 +45,8 @@ if node['os'] == 'windows'
 
   nssm 'consul' do
     program ::File.join(node['consul']['install_dir'], 'consul.exe')
-    args %(agent -config-dir="""#{node['consul']['conf_dir']}""")
-    params(
+    args %(agent -config-dir="#{node['consul']['conf_dir']}")
+    parameters(
       AppDirectory: node['consul']['install_dir'],
       AppStdoutCreationDisposition: 4,
       AppStderrCreationDisposition: 4,
@@ -62,7 +62,7 @@ if node['os'] == 'windows'
   end
 end
 
-service_action = node['consul']['disable_service'] ? [:disable, :stop] : [:enable, :start]
+service_action = node['consul']['disable_service'] ? %i[disable stop] : %i[enable start]
 
 service 'consul' do
   supports :status => true, :restart => true, :reload => true

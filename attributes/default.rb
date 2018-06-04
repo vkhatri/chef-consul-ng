@@ -1,7 +1,7 @@
-default['consul']['version'] = '0.7.0'
+default['consul']['version'] = '1.1.0'
 default['consul']['disable_service'] = false
 
-default['consul']['packages'] = %w(unzip)
+default['consul']['packages'] = %w[unzip]
 
 default['consul']['notify_restart'] = true
 default['consul']['version_purge'] = false
@@ -30,6 +30,9 @@ default['consul']['install_diplomat_gem'] = false # enable it on specific node t
 default['consul']['configure'] = true
 default['consul']['install'] = true
 
+# drive letter on windows systems
+default['consul']['windows_drive_letter'] = 'C:'
+
 # http://www.consul.io/docs/agent/options.html
 default['consul']['config']['bootstrap'] = false
 default['consul']['config']['server'] = false
@@ -43,7 +46,7 @@ default['consul']['config']['start_join'] = []
 default['consul']['config']['ports']['server'] = 8_300
 default['consul']['config']['ports']['serf_lan'] = 8_301
 default['consul']['config']['ports']['serf_wan'] = 8_302
-default['consul']['config']['ports']['rpc'] = 8_400
+default['consul']['config']['ports']['rpc'] = 8_400 unless node['consul']['version'] >= '0.8.0'
 default['consul']['config']['ports']['dns'] = 8_600
 default['consul']['config']['ports']['http'] = 8_500
 
@@ -59,7 +62,7 @@ default['consul']['config']['ports']['http'] = 8_500
 # default['consul']['config']['skip_leave_on_interrupt'] =
 # default['consul']['config']['domain'] =
 # default['consul']['config']['acl_down_policy'] =
-# default['consul']['config']['protocol'] =
+default['consul']['config']['protocol'] = 3
 # default['consul']['config']['acl_default_policy'] =
 # default['consul']['config']['verify_incoming'] =
 # default['consul']['config']['enable_syslog'] =

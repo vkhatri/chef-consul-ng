@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'consul-ng::install_windows' do
   shared_examples_for 'consul' do
     context 'windows' do
-      %w(C:/usr/local/consul C:/usr/local/consul/0.7.0 C:/etc/consul C:/usr/local/consul/scripts C:/var/run/consul C:/var/lib/consul C:/var/log/consul).each do |d|
+      %w[C:/usr/local/consul C:/usr/local/consul/0.7.0 C:/etc/consul C:/usr/local/consul/scripts C:/var/run/consul C:/var/lib/consul C:/var/log/consul].each do |d|
         it "it creates directory #{d}" do
           expect(chef_run).to create_directory(d)
         end

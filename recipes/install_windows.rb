@@ -17,12 +17,12 @@
 # limitations under the License.
 #
 
-node.default['consul']['conf_dir'] = ::File.join('C:', node['consul']['conf_dir'])
-node.default['consul']['conf_file'] = ::File.join('C:', node['consul']['conf_file'])
-node.default['consul']['parent_dir'] = ::File.join('C:', node['consul']['parent_dir'])
-node.default['consul']['log_dir'] = ::File.join('C:', node['consul']['log_dir'])
-node.default['consul']['pid_dir'] = ::File.join('C:', node['consul']['pid_dir'])
-node.default['consul']['config']['data_dir'] = ::File.join('C:', node['consul']['config']['data_dir'])
+node.default['consul']['conf_dir'] = ::File.join(node['consul']['windows_drive_letter'], node['consul']['conf_dir']).gsub(File::SEPARATOR, File::ALT_SEPARATOR || File::SEPARATOR)
+node.default['consul']['conf_file'] = ::File.join(node['consul']['windows_drive_letter'], node['consul']['conf_file'])
+node.default['consul']['parent_dir'] = ::File.join(node['consul']['windows_drive_letter'], node['consul']['parent_dir'])
+node.default['consul']['log_dir'] = ::File.join(node['consul']['windows_drive_letter'], node['consul']['log_dir'])
+node.default['consul']['pid_dir'] = ::File.join(node['consul']['windows_drive_letter'], node['consul']['pid_dir'])
+node.default['consul']['config']['data_dir'] = ::File.join(node['consul']['windows_drive_letter'], node['consul']['config']['data_dir']).gsub(File::SEPARATOR, File::ALT_SEPARATOR || File::SEPARATOR)
 
 node.default['consul']['scripts_dir'] = ::File.join(node['consul']['parent_dir'], 'scripts')
 node.default['consul']['install_dir'] = ::File.join(node['consul']['parent_dir'], 'consul')
@@ -56,8 +56,6 @@ webui_package_url = if node['consul']['webui_package_url'] == 'auto'
                       node['consul']['webui_package_url']
                     end
 
-webui_package_checksum = node['consul']['install'] ? webui_sha256sum(node['consul']['version']) : nil
-
 windows_zipfile node['consul']['version_dir'] do
   source package_url
   checksum package_checksum
@@ -66,13 +64,17 @@ windows_zipfile node['consul']['version_dir'] do
   only_if { node['consul']['install'] }
 end
 
-ui_dir = node['consul']['version'] >= '0.6.0' ? ::File.join(node['consul']['version_dir'], 'dist') : node['consul']['version_dir']
-windows_zipfile ui_dir do
-  source webui_package_url
-  checksum webui_package_checksum
-  action :unzip
-  not_if { ::File.exist?(::File.join(node['consul']['version_dir'], 'dist', 'index.html')) }
-  only_if { node['consul']['install'] }
+if Gem::Version.new(node['consul']['version']) < Gem::Version.new('0.9.0')
+  webui_package_checksum = node['consul']['install'] ? webui_sha256sum(node['consul']['version']) : nil
+
+  ui_dir = node['consul']['version'] >= '0.6.0' ? ::File.join(node['consul']['version_dir'], 'dist') : node['consul']['version_dir']
+  windows_zipfile ui_dir do
+    source webui_package_url
+    checksum webui_package_checksum
+    action :unzip
+    not_if { ::File.exist?(::File.join(node['consul']['version_dir'], 'dist', 'index.html')) }
+    only_if { node['consul']['install'] }
+  end
 end
 
 link node['consul']['install_dir'] do

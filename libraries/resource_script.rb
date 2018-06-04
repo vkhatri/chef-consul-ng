@@ -12,7 +12,7 @@ class Chef
         @provides = :consul_script
         @provider = Chef::Provider::ConsulScript
         @action = :create
-        @allowed_actions = [:create, :delete, :nothing]
+        @allowed_actions = %i[create delete nothing]
         @name = name
       end
 
@@ -44,6 +44,14 @@ class Chef
         set_or_return(
           :script_content, arg,
           :kind_of => String,
+          :default => nil
+        )
+      end
+
+      def template_variables(arg = nil)
+        set_or_return(
+          :template_variables, arg,
+          :kind_of => Hash,
           :default => nil
         )
       end
